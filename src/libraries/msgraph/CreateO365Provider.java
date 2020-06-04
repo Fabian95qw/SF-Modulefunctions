@@ -1,6 +1,5 @@
 package nucom.module.msgraphs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -30,7 +29,10 @@ public class CreateO365Provider implements IBaseExecutable
 	public String ClientSecret="";
 	
 	@InputVar(label="Scopes", description="List of Ms Graph Scopes",type=VariableType.LIST)
-	public List<String> Scopes= new ArrayList<String>();
+	public List<List<String>> ScopesRaw= null;
+	
+	@InputVar(label="Use Beta-Branch", description="Changes this to a Beta-Branch Provider",type=VariableType.BOOLEAN)
+	public boolean UseBeta=false;
 	
 	@OutputVar(label="O365Provider", description="Return an Office365 Provider",type=VariableType.OBJECT)
 	public Object O365Provider = null;
@@ -39,15 +41,41 @@ public class CreateO365Provider implements IBaseExecutable
     //##########################################################################################
 	
 	//###################			Code Execution			############################	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
 		Log log = context.getLog();
 		log.debug("Creating Provider...");
 		
+		List<String> Scopes = null;
+		
+		//For some Reason STARFACE Provides a List[List[]] instead of a List[]
+		try
+		{
+			Scopes = ScopesRaw.get(0);
+		}
+		catch(Exception e)
+		{
+			Object O= ScopesRaw;
+			Scopes = (List<String>) O;
+		}
+		
+		log.debug(TenantID);
+		log.debug(ClientID);
+		log.debug(ClientSecret);
+		log.debug(Scopes);
+		
 		O365Provider Provider = new O365Provider(TenantID, ClientID, ClientSecret, Scopes, context.getLog());
+		if(UseBeta)
+		{
+			Provider.tobeta();
+		}
 		O365Provider = Provider;
+				
 		log.debug("Provider Sucessfully created!");
+		
+		log.debug("Accesstoken: "+ Provider.Token());
 		
 	}//END OF EXECUTION
 
