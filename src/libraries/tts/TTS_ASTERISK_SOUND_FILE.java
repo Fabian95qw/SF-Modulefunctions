@@ -1,6 +1,7 @@
 package nucom.module.tts;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,6 @@ import org.apache.commons.logging.Log;
 import com.voicerss.tts.VoiceParameters;
 import com.voicerss.tts.VoiceProvider;
 
-import de.schlichtherle.io.File;
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.model.VariableType;
 import de.vertico.starface.module.core.model.Visibility;
@@ -24,6 +24,7 @@ import de.vertico.starface.module.core.runtime.annotations.OutputVar;
 import nucom.module.tts.utility.EnumHelper.AudioCodec;
 import nucom.module.tts.utility.EnumHelper.AudioFormat;
 import nucom.module.tts.utility.EnumHelper.Language;
+import nucom.module.tts.utility.EnumHelper.Voice;
 import nucom.module.tts.utility.LogHelper;
 
 @Function(visibility=Visibility.Public, rookieFunction=false, description="")
@@ -38,10 +39,16 @@ public class TTS_ASTERISK_SOUND_FILE implements IBaseExecutable
 	public String Text="";
 		    	
 	@InputVar(label="Language", description="Language", valueByReferenceAllowed=true)
-	public Language language = Language.German;
+	public Language language = Language.German_Germany;
 		
+	@InputVar(label="Voice", description="Voice", valueByReferenceAllowed=true)
+	public Voice voice = Voice.German_Germany_Lina;
+	
+	@InputVar(label="Rate", description="Rate between -10 and 10 (0 == default)",type=VariableType.NUMBER)
+	public Integer Rate=0;
+	
 	@InputVar(label="AudioFormat", description="Audio format", valueByReferenceAllowed=true)
-	public AudioFormat audioformat = AudioFormat.AF_48khz_16bit_stereo;
+	public AudioFormat audioformat = AudioFormat.AF_48khz_16bit_stereo;	
 	
 	@InputVar(label="Targetpath", description="IMPORTANT! PATH HAS TO BE ACCESSIBLE BY ASTERISK, OR IT WONT WORK IN PLAYBACKRESOURCEFILE",type=VariableType.STRING)
 	public String Targetpath="/tmp/";
@@ -67,12 +74,18 @@ public class TTS_ASTERISK_SOUND_FILE implements IBaseExecutable
 		
 		VoiceProvider VP  = new VoiceProvider(APIKEY);
 		VoiceParameters Params = new VoiceParameters(Text, language.toString());
+		Params.setVoice(voice.toString());
 		Params.setFormat(audioformat.toString());
 		Params.setCodec(AudioCodec.WAV.toString());
+		
 		Params.setBase64(false);
 		Params.setSSML(false);
-		Params.setRate(0);
 		
+		if(Rate < -10 || Rate > 10)
+		{
+			Rate = 0;
+		}
+		Params.setRate(Rate);
 		
 		try
 		{
