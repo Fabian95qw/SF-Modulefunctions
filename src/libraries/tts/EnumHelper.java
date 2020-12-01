@@ -175,6 +175,7 @@ public class EnumHelper
 		Voice(String S) {
 	        this.S = S;
 	    }
+		
 	 
 	    public String toString() {
 	        return S;
