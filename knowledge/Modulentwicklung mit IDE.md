@@ -132,8 +132,6 @@ Klassenname Variablenname = (Klassenname)context.provider().fetch(Klassenname.cl
 Z.b. das PhoneBusinessObject 
 PhoneBusinessObject PBO = (PhoneBusinessObject)context.provider().fetch(PhoneBusinessObject.class);
 
-Mehr details zu den verschiedenen BusinessObjects findet ihr im entsprechenden File auf Github.
-
 # Exportieren eines Bausteins für die Anlage
 Um einen Baustein auf der Anlage zu importieren, muss man diesen zuerst als kompilierte .class Datei Exportieren. 
 
