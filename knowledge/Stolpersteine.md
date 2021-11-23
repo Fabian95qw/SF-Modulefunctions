@@ -7,3 +7,6 @@ Default-Variablen für Felder können nach dem Update der STARFACE einen null We
 Beispiel: Ein Dropdown enthält 3 Werte. "A", "B", "C". Der Standartwert ist auf "A" gesetzt. Es gibt ein Switch Case mit diesen 3 Optionen.
 Vor dem Update, enthielt der GUI_DROPDOWN den Wert "A", nach dem Update der STARFACE steht "null" in diesem Wert. Der Switch-Case kennt diese Option nicht, und dementsprechend wird keine der 3 Optionen ausgeführt.
 
+SetCaller, und SetCallerID haben nur einen Effekt, wenn der Anruf noch nicht vollständig initiert ist. 
+Deshalb hat es keine wirkung mehr, wenn z.b. "Anruf an Benutzer ==> Weiterleiten an Modul ==> Modul macht SetCaller" ausgeführt wird.
+Für solche Fälle, muss das Modul den Anruf annehmen, und anschliessend muss mit CallPhoneNumber gearbeitet werden.
