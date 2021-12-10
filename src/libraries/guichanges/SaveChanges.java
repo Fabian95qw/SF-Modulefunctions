@@ -2,7 +2,6 @@ package si.module.guichanges;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import org.apache.commons.logging.Log;
 
 import de.starface.core.component.StarfaceComponentProvider;
@@ -15,6 +14,7 @@ import de.vertico.starface.module.core.runtime.IRuntimeEnvironment;
 import de.vertico.starface.module.core.runtime.annotations.Function;
 import de.vertico.starface.module.core.runtime.annotations.InputVar;
 import de.vertico.starface.module.core.runtime.annotations.OutputVar;
+
 
 @Function(visibility=Visibility.Private, rookieFunction=false, description="Save Changes to the ModuleInstanceProject")
 public class SaveChanges implements IBaseExecutable 
@@ -43,10 +43,11 @@ public class SaveChanges implements IBaseExecutable
 		
 		ModuleInstanceProject MIP = (ModuleInstanceProject) MIPObject;
 		ModuleRegistry MR = (ModuleRegistry)context.provider().fetch(ModuleRegistry.class);
-
+		
 		try 
 		{
 			log.debug("Updating Instance " + MIP.getObject().getModuleName() +" " + MIP.getObject().getId());
+			SaveChangesHelper.AddChange(MIP.getObject().getId(), log);
 			MR.updateModuleInstance(MIP);
 			Success=true;
 		}
