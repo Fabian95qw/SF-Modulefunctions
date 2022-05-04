@@ -22,7 +22,7 @@ public class MergePDFs implements IBaseExecutable
 {
 	//##########################################################################################
 	
-	@InputVar(label="PDF-Files", description="Map<Order, Path/to/PDF/File.pdf> Merges the PDF's in the Set order For example: [{1, /tmp/page1.pdf}{2, /tmp/page2.pdf}] ",type=VariableType.STRING)
+	@InputVar(label="PDF-Files", description="Map<Order, Path/to/PDF/File.pdf> Merges the PDF's in the Set order For example: [{1, /tmp/page1.pdf}{2, /tmp/page2.pdf}] ",type=VariableType.MAP)
 	public Map<Integer, String> Pages = new HashMap<Integer, String>();
 
 	@InputVar(label="Targetfile", description="The export location of the merged pdf",type=VariableType.STRING)

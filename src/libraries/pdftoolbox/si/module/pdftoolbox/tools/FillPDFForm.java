@@ -30,10 +30,10 @@ public class FillPDFForm implements IBaseExecutable
 	@InputVar(label="Targetfile", description="The export location of the filled out pdf",type=VariableType.STRING)
 	public String Targetfile="/tmp/export.pdf";
 	
-	@InputVar(label="Mapping", description="Map<Fieldname, Content> Sets the content of a Field Based on the Fieldname. For example: {'Textbox1', '7.2.0.1'} sets the value of Textbox1 in the PDF to 7.2.0.1",type=VariableType.STRING)
+	@InputVar(label="Mapping", description="Map<Fieldname, Content> Sets the content of a Field Based on the Fieldname. For example: {'Textbox1', '7.2.0.1'} sets the value of Textbox1 in the PDF to 7.2.0.1",type=VariableType.MAP)
 	public Map<String, String> Mapping = new HashMap<String, String>();
 	
-	@InputVar(label="Replacement", description="Map<Searchstring, Replacementstring>. Replaces the content of Fields Based on the Searchstring. For example: {'%SFVersion%'. '7.2.0.1'} checks every field in the pdf for %SFVersion% and replaces every instance of it with 7.2.0.1",type=VariableType.STRING)
+	@InputVar(label="Replacement", description="Map<Searchstring, Replacementstring>. Replaces the content of Fields Based on the Searchstring. For example: {'%SFVersion%'. '7.2.0.1'} checks every field in the pdf for %SFVersion% and replaces every instance of it with 7.2.0.1",type=VariableType.MAP)
 	public Map<String, String> Replacement = new HashMap<String, String>();
 	
 	@InputVar(label="SetReadOnly", description="Sets edited Fields to readonly, so they can't be edited by hand later on",type=VariableType.BOOLEAN)

@@ -62,6 +62,9 @@ public class AddTableRow implements IBaseExecutable
 	
 	@InputVar(label="BorderStye", description="", valueByReferenceAllowed = true)
 	public BorderStyle RowBorderStye=BorderStyle.SOLID;
+	
+	@InputVar(label="BorderWidth", description="", type=VariableType.NUMBER)
+	public Float BorderWidth=1f;
 
 	@OutputVar(label="Success", description="",type=VariableType.BOOLEAN)
 	public Boolean Success = false;
@@ -120,6 +123,7 @@ public class AddTableRow implements IBaseExecutable
 			RB.wordBreak(DoWordBreak);
 			RB.horizontalAlignment(HorizontalAlignmentStyle);
 			RB.verticalAlignment(VerticalAlignmentStyle);
+			RB.borderWidth(BorderWidth);
 		}		
 		
 		TB.addRow(RB.build());
