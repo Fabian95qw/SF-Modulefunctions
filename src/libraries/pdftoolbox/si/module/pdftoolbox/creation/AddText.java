@@ -14,6 +14,7 @@ import de.vertico.starface.module.core.runtime.annotations.Function;
 import de.vertico.starface.module.core.runtime.annotations.InputVar;
 import de.vertico.starface.module.core.runtime.annotations.OutputVar;
 import si.module.pdftoolbox.pdfobject.PDFObject;
+import si.module.pdftoolbox.utility.ColorConverter;
 import si.module.pdftoolbox.utility.EnumHelper.Fonts;
 
 @Function(name="[PDF] Add Text to Page",visibility=Visibility.Public, rookieFunction=false, description="")
@@ -35,6 +36,9 @@ public class AddText implements IBaseExecutable
 	
 	@InputVar(label="Font Size", description="",type=VariableType.NUMBER)
 	public Integer Size = 12;
+	
+	@InputVar(label="Font Color", description="The Color RGB[0-255] Example: 255,255,255", type=VariableType.STRING)
+	public String FontColor="0,0,0";
 	
 	@InputVar(label="Offset X", description="",type=VariableType.NUMBER)
 	public Float X = 0f;
@@ -74,6 +78,8 @@ public class AddText implements IBaseExecutable
 		ContentStream.beginText();
 		ContentStream.newLineAtOffset(X, Y);
 		ContentStream.setFont(F.Font, Size);
+		ContentStream.setNonStrokingColor(ColorConverter.ConverttoAWTColor(FontColor, log));
+		ContentStream.setStrokingColor(ColorConverter.ConverttoAWTColor(FontColor, log));
 		ContentStream.showText(Text);
 		ContentStream.endText();
 		ContentStream.close();
