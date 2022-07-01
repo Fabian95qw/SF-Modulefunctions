@@ -1,4 +1,4 @@
-package nucom.module.tts.utility;
+package si.module.tts.voicerss.utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,9 @@ import de.vertico.starface.module.core.runtime.IBaseExecutable;
 import de.vertico.starface.module.core.runtime.IRuntimeEnvironment;
 import de.vertico.starface.module.core.runtime.annotations.Function;
 import de.vertico.starface.module.core.runtime.annotations.InputVar;
-import nucom.module.tts.utility.EnumHelper.AudioFormat;
-import nucom.module.tts.utility.EnumHelper.Language;
-import nucom.module.tts.utility.EnumHelper.Voice;
+import si.module.tts.voicerss.utility.EnumHelper.AudioFormat;
+import si.module.tts.voicerss.utility.EnumHelper.Language;
+import si.module.tts.voicerss.utility.EnumHelper.Voice;
 
 @Function(visibility=Visibility.Public, rookieFunction=false, description="Fills the TextChoices with all the Language Options for the Module")
 public class TTS_FILL_TEXTCHOICES implements IBaseExecutable 

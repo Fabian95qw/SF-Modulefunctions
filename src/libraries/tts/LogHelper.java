@@ -1,4 +1,4 @@
-package nucom.module.tts.utility;
+package si.module.tts.voicerss.utility;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

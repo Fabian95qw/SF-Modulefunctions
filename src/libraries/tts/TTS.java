@@ -1,4 +1,4 @@
-package nucom.module.tts;
+package si.module.tts.voicerss;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,11 +17,11 @@ import de.vertico.starface.module.core.runtime.IRuntimeEnvironment;
 import de.vertico.starface.module.core.runtime.annotations.Function;
 import de.vertico.starface.module.core.runtime.annotations.InputVar;
 import de.vertico.starface.module.core.runtime.annotations.OutputVar;
-import nucom.module.tts.utility.EnumHelper.AudioCodec;
-import nucom.module.tts.utility.EnumHelper.AudioFormat;
-import nucom.module.tts.utility.EnumHelper.Language;
-import nucom.module.tts.utility.EnumHelper.Voice;
-import nucom.module.tts.utility.LogHelper;
+import si.module.tts.voicerss.utility.LogHelper;
+import si.module.tts.voicerss.utility.EnumHelper.AudioCodec;
+import si.module.tts.voicerss.utility.EnumHelper.AudioFormat;
+import si.module.tts.voicerss.utility.EnumHelper.Language;
+import si.module.tts.voicerss.utility.EnumHelper.Voice;
 
 @Function(visibility=Visibility.Public, rookieFunction=false, description="")
 public class TTS implements IBaseExecutable 
