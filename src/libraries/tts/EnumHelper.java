@@ -1,4 +1,4 @@
-package nucom.module.tts.utility;
+package si.module.tts.voicerss.utility;
 
 public class EnumHelper 
 {
