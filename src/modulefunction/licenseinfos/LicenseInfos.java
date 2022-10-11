@@ -1,13 +1,13 @@
-package nucom.module.modulefunction;
+package si.module.modulefunction;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.starface.license.manager.LicenseComponent;
-import de.starface.license.manager.jpa.v3.License;
+import de.starface.license.manager.ws.beans.license.License;
 import de.vertico.starface.module.core.model.VariableType;
 import de.vertico.starface.module.core.model.Visibility;
 import de.vertico.starface.module.core.runtime.IBaseExecutable;
@@ -33,12 +33,13 @@ public class LicenseInfos implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		
 		log.debug("Getting Server license key");
 		
 		LicenseComponent LC = (LicenseComponent)StarfaceComponentProvider.getInstance().fetch(LicenseComponent.class);		
 		License L = LC.getServerLicense();
+
 		
 		if(L == null)
 		{
