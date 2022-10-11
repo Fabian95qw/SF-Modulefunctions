@@ -1,6 +1,6 @@
 package si.module.letsencryptv3.utility;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.model.Visibility;
@@ -20,7 +20,7 @@ public class CleanUp implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		
 		log.debug("Cleaning");
 		
@@ -78,27 +78,6 @@ public class CleanUp implements IBaseExecutable
 				log.debug("Deletion of: " + Standards.RegistrationURI().getAbsolutePath() + " failed");
 			}
 		}
-		
-		/*
-		if(Standards.AuthorizationDNSURI().exists())
-		{
-			Standards.AuthorizationDNSURI().delete();
-			if(Standards.AuthorizationDNSURI().exists())
-			{
-				log.debug("Deletion of: " + Standards.AuthorizationDNSURI().getAbsolutePath() + " failed");
-			}
-		}
-		
-		if(Standards.AuthorizationHTTPURI().exists())
-		{
-			Standards.AuthorizationHTTPURI().delete();
-			if(Standards.AuthorizationHTTPURI().exists())
-			{
-				log.debug("Deletion of: " + Standards.AuthorizationHTTPURI().getAbsolutePath() + " failed");
-			}
-		}
-		
-		*/
 		
 		if(Standards.KeyStoreBackup().exists())
 		{

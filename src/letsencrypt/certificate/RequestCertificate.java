@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 import org.shredzone.acme4j.Certificate;
 import org.shredzone.acme4j.Order;
 import org.shredzone.acme4j.Status;
@@ -64,11 +64,11 @@ public class RequestCertificate implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 				
 		File PrivateKey = Standards.CertPK();
 			
-		log.debug("Trying to Request a Certificate");
+		log.info("Trying to Request a Certificate");
 							
 		KeyPair KP = null;
 		
@@ -165,7 +165,7 @@ public class RequestCertificate implements IBaseExecutable
 			}
 			else if(O.getStatus().equals(Status.VALID))
 			{						
-				log.debug("Request Successful! Writing Certificate to HDD");
+				log.info("Request Successful! Writing Certificate to HDD");
 				
 				Certificate C = O.getCertificate();
 							
@@ -220,7 +220,7 @@ public class RequestCertificate implements IBaseExecutable
 				
 				log.debug("Creating new Keystore");
 				
-				KeyStore KS = KeyStore.getInstance(KeyStore.getDefaultType());
+				KeyStore KS = KeyStore.getInstance("jks");
 				
 				KS.load(null, "changeit".toCharArray());
 				
@@ -235,7 +235,7 @@ public class RequestCertificate implements IBaseExecutable
 				
 				KS.store(FOS, "changeit".toCharArray());
 				
-				log.debug("Done");
+				log.info("Done");
 					
 				Success = true;
 			}
@@ -244,6 +244,14 @@ public class RequestCertificate implements IBaseExecutable
 		{
 			Success=false;
 			LogHelper.EtoStringLog(log, e);
+			log.info("Trying to restore old Keystore...");
+			if(Standards.KeyStoreBackup().exists())
+			{
+				FileUtils.copyFile(Standards.KeyStoreBackup(), Standards.TargetKeyStore());
+				log.info("Old Keystore sucessfully restored!");
+			}
+
+			
 		}
 		
 	}//END OF EXECUTION

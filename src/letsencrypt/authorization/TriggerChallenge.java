@@ -1,6 +1,6 @@
 package si.module.letsencryptv3.authorization;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 import org.shredzone.acme4j.Status;
 import org.shredzone.acme4j.challenge.Dns01Challenge;
 import org.shredzone.acme4j.challenge.Http01Challenge;
@@ -38,7 +38,7 @@ public class TriggerChallenge implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		
 		if(Storage.A != null && Storage.A.getStatus().equals(Status.VALID))
 		{
@@ -47,7 +47,7 @@ public class TriggerChallenge implements IBaseExecutable
 			return;
 		}
 		
-		log.debug("Triggering Challenge");
+		log.info("Triggering Challenge");
 		try
 		{
 			switch(C)

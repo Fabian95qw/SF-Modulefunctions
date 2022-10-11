@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.net.URI;
 import java.security.KeyPair;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 import org.shredzone.acme4j.Account;
 import org.shredzone.acme4j.AccountBuilder;
 import org.shredzone.acme4j.Session;
@@ -44,9 +44,15 @@ public class RegisterACMEAccount implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		
-		log.debug("Trying to Register: "+ EMail);
+		log.info("Trying to Register: "+ EMail);
+		
+		if(EMail.isEmpty())
+		{
+			log.error("No E-Mail provided. Aborting..");
+			return;
+		}
 		
 		Account AC = null;
 		
@@ -105,14 +111,7 @@ public class RegisterACMEAccount implements IBaseExecutable
 				
 		Session S = Storage.S;
 		URI RegistrationLocation = null;
-		
-		
-		if(EMail.isEmpty())
-		{
-			log.debug("E-Mail is Empty. aborting..");
-			Success = false;
-		}
-		
+				
 		if(Standards.RegistrationURI().exists())
 		{
 			log.debug("Loading Registration file");
@@ -129,7 +128,7 @@ public class RegisterACMEAccount implements IBaseExecutable
 			
 			//try
 			//{
-				log.debug("Accepting Agreement");
+				log.info("Accepting Agreement");
 				AB.agreeToTermsOfService();
 				log.debug("Accepted Agreement");
 				AB.useKeyPair(SessionKP);
@@ -161,64 +160,7 @@ public class RegisterACMEAccount implements IBaseExecutable
 		}
 		Storage.AC=AC;
 		Success = true;
-		
-/*			
-		Session S = Storage.S;
-		URI RegistrationLocation = null;
-		
-		if(EMail.isEmpty())
-		{
-			log.debug("E-Mail is Empty. aborting..");
-			Success = false;
-		}
-		
-		if(Standards.RegistrationURI().exists())
-		{
-			log.debug("Loading Registration file");
-			BufferedReader BR = new BufferedReader(new FileReader(Standards.RegistrationURI()));
-			String SUri = BR.readLine();
-			BR.close();
-			RegistrationLocation = URI.create(SUri);
-		}
-		
-		R = null;
-		
-		if(RegistrationLocation == null)
-		{
-			RegistrationBuilder RB = new RegistrationBuilder();
-			RB.addContact("mailto:" +EMail);
-			
-			try
-			{
-				R = RB.create(S);
-				log.debug("Registration Successful.");
-				RegistrationLocation = R.getLocation().toURI();
-				
-				log.debug("Accepting Agreement");
-				R.modify().setAgreement(R.getAgreement()).commit();
-				log.debug("Accepted Agreement");
-				
-			}
-			catch(AcmeConflictException e)
-			{
-				R = Registration.bind(S, e.getLocation());
-				RegistrationLocation = R.getLocation().toURI();
-				log.debug("E-Mail is already registered. Getting existing Registration");
-			}
-			
-			log.debug("Saving RegistrationURI");
-			FileWriter FW = new FileWriter(Standards.RegistrationURI());
-			FW.write(RegistrationLocation.toString());	
-			FW.close();
-		}
-		else
-		{
-			log.debug("Binding existing Registration to Session");
-			R = Registration.bind(S, RegistrationLocation.toURL());
-		}
-		Storage.R=R;
-		
-		*/
+
 	}//END OF EXECUTION
 
 	

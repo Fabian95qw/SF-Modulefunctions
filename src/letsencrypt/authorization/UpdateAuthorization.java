@@ -1,6 +1,6 @@
 package si.module.letsencryptv3.authorization;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 import org.shredzone.acme4j.Authorization;
 import org.shredzone.acme4j.Order;
 import org.shredzone.acme4j.Status;
@@ -32,7 +32,13 @@ public class UpdateAuthorization implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
+		
+		if(Domain.isEmpty())
+		{
+			log.error("Supplied Domain: "+  Domain +" is invalid!");
+			return;
+		}
 		
 		Order O = Storage.AC.newOrder().domains(Domain).create();		
 		Storage.O=O;
@@ -54,6 +60,7 @@ public class UpdateAuthorization implements IBaseExecutable
 			}			
 			
 		}
+		Success = true;
 	}//END OF EXECUTION
 
 	

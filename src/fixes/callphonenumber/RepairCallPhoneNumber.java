@@ -3,7 +3,7 @@ package si.module.modulefunction;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.ch.routing.tracking.CallRoutingContext;
 import de.starface.ch.routing.tracking.CallRoutingContextStore;
@@ -24,7 +24,7 @@ public class RepairCallPhoneNumber implements IAGIJavaExecutable
 	@Override
 	public void execute(IAGIRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		log.debug("Checking if CallRoutingContext needs to be repaired");
 		
 		CallRoutingContextStore CRCS = context.provider().fetch(CallRoutingContextStore .class);
@@ -58,7 +58,7 @@ public class RepairCallPhoneNumber implements IAGIJavaExecutable
 		
 	}
 	
-	private static void EtoStringLog(Log log, Exception e)
+	private static void EtoStringLog(Logger log, Exception e)
 	{
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);

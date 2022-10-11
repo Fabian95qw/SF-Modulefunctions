@@ -1,6 +1,9 @@
 package si.module.letsencryptv3.authorization;
 
-import org.apache.commons.logging.Log;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import org.apache.logging.log4j.Logger;
 import org.shredzone.acme4j.Authorization;
 import org.shredzone.acme4j.Order;
 import org.shredzone.acme4j.Status;
@@ -45,9 +48,9 @@ public class CreateChallenge implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 
-		log.debug("Trying to Authorize Domain: "+ Domain);
+		log.info("Trying to Authorize Domain: "+ Domain);
 		
 		if(Domain.isEmpty())
 		{
@@ -105,7 +108,17 @@ public class CreateChallenge implements IBaseExecutable
 				}
 				break;
 			case HTTP:
-				A=O.getAuthorizations().get(0);
+				A=O.getAuthorizations().get(0);					
+				File WellKnownFolder = new File("/opt/tomcat/webapps/localhost/starface/.well-known/acme-challenge");
+				WellKnownFolder.mkdirs();
+				
+				log.debug("Deleting old Authorizations...");
+				for(File F: WellKnownFolder.listFiles())
+				{
+					log.debug("Deleting: "+  F.getAbsolutePath());
+					F.delete();
+				}
+				
 				if(Storage.HTTP == null || Storage.HTTP.getStatus() == Status.INVALID)
 				{
 					Http01Challenge HTTP = A.findChallenge(Http01Challenge.TYPE);
@@ -118,6 +131,26 @@ public class CreateChallenge implements IBaseExecutable
 					AcmeEntry = "TARGET-URL: http://"+Domain+"/.well-known/acme-challenge/"+Storage.HTTP.getToken();
 					AcmeDigest="FILE-CONTENT: " +Storage.HTTP.getAuthorization();
 				}
+				
+				log.debug("Creating Token...");
+				File Token = new File("/opt/tomcat/webapps/localhost/starface/.well-known/acme-challenge/"+Storage.HTTP.getToken());
+				if(!Token.exists())
+				{
+					log.debug("Writing Token..."+  Token.getAbsoluteFile());
+					Token.createNewFile();
+				}
+				try
+				{
+					FileOutputStream FOS = new FileOutputStream(Token, false);
+					FOS.write(Storage.HTTP.getAuthorization().getBytes());
+					FOS.flush();
+					FOS.close();
+				}
+				catch(Exception e)
+				{
+					LogHelper.EtoStringLog(log, e);
+				}
+				
 				break;
 			case NONE:
 				break;		
@@ -130,77 +163,6 @@ public class CreateChallenge implements IBaseExecutable
 			return;
 		}
 		
-		/*
-		try
-		{
-			switch(C)
-			{
-			case DNS:
-				if(Standards.AuthorizationDNSURI().exists())
-				{
-					log.debug("Loading old Authorizationfile: " + Standards.AuthorizationDNSURI().getAbsolutePath());
-					BufferedReader BR = new BufferedReader(new FileReader(Standards.AuthorizationDNSURI()));
-					//String SUri = BR.readLine();
-					BR.close();
-					//A = Authorization.bind(S, URI.create(SUri).toURL());
-					A = O.getAuthorizations().get(0);
-				}
-				else
-				{
-					 A = O.getAuthorizations().get(0);
-				}
-	
-				if(Storage.DNS == null || Storage.DNS.getStatus() == Status.INVALID)
-				{
-					Dns01Challenge DNS = A.findChallenge(Dns01Challenge.TYPE);
-					AcmeEntry ="DNS-Entry-TYPE:TXT ==> _acme-challenge."+Domain;
-					AcmeDigest = "DNS-Entry-CONTENT: ==> " + DNS.getDigest();
-					Storage.DNS = DNS;
-				}
-				else
-				{
-					AcmeEntry ="DNS-Entry-TYPE:TXT ==> _acme-challenge."+Domain;
-					AcmeDigest = "DNS-Entry-CONTENT: ==> " +Storage.DNS.getDigest();
-				}
-				break;
-			case HTTP:
-				if(Standards.AuthorizationHTTPURI().exists())
-				{
-					log.debug("Loading old Authorizationfile: " + Standards.AuthorizationHTTPURI().getAbsolutePath());
-					BufferedReader BR = new BufferedReader(new FileReader(Standards.AuthorizationHTTPURI()));
-					//String SUri = BR.readLine();
-					BR.close();
-					//A = Authorization.bind(S, URI.create(SUri).toURL());					
-					A = O.getAuthorizations().get(0);
-				}
-				else
-				{
-					A=O.getAuthorizations().get(0);
-				}
-				if(Storage.HTTP == null || Storage.HTTP.getStatus() == Status.INVALID)
-				{
-					Http01Challenge HTTP = A.findChallenge(Http01Challenge.TYPE);
-					AcmeEntry ="TARGET-URL: http://"+Domain+"/.well-known/acme-challenge/"+HTTP.getToken();
-					AcmeDigest="FILE-CONTENT: " +HTTP.getAuthorization();
-					Storage.HTTP = HTTP;
-				}
-				else
-				{
-					AcmeEntry = "TARGET-URL: http://"+Domain+"/.well-known/acme-challenge/"+Storage.HTTP.getToken();
-					AcmeDigest="FILE-CONTENT: " +Storage.HTTP.getAuthorization();
-				}
-				break;
-			case NONE:
-				break;		
-			}
-		}
-		catch(Exception e)
-		{
-			LogHelper.EtoStringLog(log, e);
-			Success= false;
-			return;
-		}
-		*/
 		Storage.A = A;
 				
 	}//END OF EXECUTION
