@@ -3,7 +3,7 @@ package si.module.guichanges;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.ModuleRegistry;
@@ -38,7 +38,7 @@ public class GetModuleInstance4Edit implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{		
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		ModuleRegistry MR = (ModuleRegistry)context.provider().fetch(ModuleRegistry.class);
 		try
 		{

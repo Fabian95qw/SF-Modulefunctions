@@ -15,18 +15,17 @@ import de.vertico.starface.module.core.runtime.IBaseExecutable;
 import de.vertico.starface.module.core.runtime.IRuntimeEnvironment;
 import de.vertico.starface.module.core.runtime.annotations.Function;
 import de.vertico.starface.module.core.runtime.annotations.InputVar;
-import de.vertico.starface.module.core.runtime.annotations.OutputVar;
 
 @Function(visibility=Visibility.Private, rookieFunction=false, description="Default")
-public class ToggleModuleInstancebyName implements IBaseExecutable 
+public class EnableDisableModuleInstancebyUUID implements IBaseExecutable 
 {
 	//##########################################################################################
 	
-	@InputVar(label="InstanceName", description="",type=VariableType.STRING)
-	public String InstanceName="";
-
-	@OutputVar(label="Disabled", description="Outputs if the Module is now disabled",type=VariableType.BOOLEAN)
-	public boolean Disabled = false;
+	@InputVar(label="InstanceUUID", description="",type=VariableType.STRING)
+	public String InstanceUUID="";
+	
+	@InputVar(label="Disable", description="If Instance should be Disabled",type=VariableType.BOOLEAN)
+	public Boolean Disable = false;
 
     StarfaceComponentProvider componentProvider = StarfaceComponentProvider.getInstance(); 
     //##########################################################################################
@@ -36,17 +35,17 @@ public class ToggleModuleInstancebyName implements IBaseExecutable
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
 		Logger log = context.getLog();
-			
-		if(InstanceName.isEmpty())
+		
+		if(InstanceUUID.isEmpty())
 		{
-			log.debug("Empty InstanceName Supplied");
+			log.debug("Empty UUID Supplied");
 			return;
 		}
 		
 		ModuleRegistry MR = (ModuleRegistry)context.provider().fetch(ModuleRegistry.class);
-				
+			
 		List<Module> Modules = MR.getModules();
-		
+				
 		List<ModuleInstance> ModuleInstances = null;
 		
 		for(Module M: Modules)
@@ -55,13 +54,13 @@ public class ToggleModuleInstancebyName implements IBaseExecutable
 			//log.debug("Working on: " + M.getName() +" ==> " + M.getId());
 			for(ModuleInstance MI: ModuleInstances)
 			{
-				//log.debug(MI.getName() + "==> "+ MI.getId() + " <==> " + InstanceUUID);
-				if(MI.getName().equals(InstanceName))
+				//log.debug(MI.getId() + " <==> " + InstanceUUID);
+				//log.debug(MI.getModuleId()  + " <==> " + InstanceUUID);
+				if(MI.getId().equals(InstanceUUID) || MI.getModuleId().equals(InstanceUUID))
 				{
-					//log.debug(MI.getName() + " <==> " + InstanceName);
+					log.debug(MI.getName() + "==> "+ MI.getId() + " <==> " + InstanceUUID);
 					ModuleInstanceProject MIP = MR.getInstance4Edit(MI.getId());
-					Disabled = !MIP.getObject().getDisabled();
-					MR.activateModuleInstance(MIP, !Disabled);
+					MR.activateModuleInstance(MIP, !Disable);
 					MR.updateModuleInstance(MIP);
 				}
 			}

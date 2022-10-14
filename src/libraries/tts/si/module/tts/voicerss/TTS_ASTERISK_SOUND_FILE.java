@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import com.voicerss.tts.VoiceParameters;
 import com.voicerss.tts.VoiceProvider;
@@ -23,9 +23,12 @@ import de.vertico.starface.module.core.runtime.annotations.InputVar;
 import de.vertico.starface.module.core.runtime.annotations.OutputVar;
 import si.module.tts.voicerss.utility.LogHelper;
 import si.module.tts.voicerss.utility.EnumHelper.AudioCodec;
+import si.module.tts.voicerss.utility.EnumHelper.AudioFormat;
+import si.module.tts.voicerss.utility.EnumHelper.Language;
+import si.module.tts.voicerss.utility.EnumHelper.Voice;
 
 @Function(visibility=Visibility.Public, rookieFunction=false, description="")
-public class TTS_ASTERISK_SOUND_FILE_STRING_INPUT implements IBaseExecutable 
+public class TTS_ASTERISK_SOUND_FILE implements IBaseExecutable 
 {
 	//##########################################################################################
 	
@@ -36,16 +39,16 @@ public class TTS_ASTERISK_SOUND_FILE_STRING_INPUT implements IBaseExecutable
 	public String Text="";
 		    	
 	@InputVar(label="Language", description="Language", valueByReferenceAllowed=true)
-	public String Language="";
+	public Language language = Language.German_Germany;
 		
 	@InputVar(label="Voice", description="Voice", valueByReferenceAllowed=true)
-	public String Voice="";
+	public Voice voice = Voice.German_Germany_Lina;
 	
 	@InputVar(label="Rate", description="Rate between -10 and 10 (0 == default)",type=VariableType.NUMBER)
 	public Integer Rate=0;
 	
 	@InputVar(label="AudioFormat", description="Audio format", valueByReferenceAllowed=true)
-	public String AudioFormat="";
+	public AudioFormat audioformat = AudioFormat.AF_48khz_16bit_stereo;	
 	
 	@InputVar(label="Targetpath", description="IMPORTANT! PATH HAS TO BE ACCESSIBLE BY ASTERISK, OR IT WONT WORK IN PLAYBACKRESOURCEFILE",type=VariableType.STRING)
 	public String Targetpath="/tmp/";
@@ -65,14 +68,14 @@ public class TTS_ASTERISK_SOUND_FILE_STRING_INPUT implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 
 		if(!Targetpath.endsWith("/")) {Targetpath=Targetpath+"/";};
 		
 		VoiceProvider VP  = new VoiceProvider(APIKEY);
-		VoiceParameters Params = new VoiceParameters(Text, Language);
-		Params.setVoice(Voice);
-		Params.setFormat(AudioFormat);
+		VoiceParameters Params = new VoiceParameters(Text, language.toString());
+		Params.setVoice(voice.toString());
+		Params.setFormat(audioformat.toString());
 		Params.setCodec(AudioCodec.WAV.toString());
 		
 		Params.setBase64(false);
@@ -113,7 +116,7 @@ public class TTS_ASTERISK_SOUND_FILE_STRING_INPUT implements IBaseExecutable
 		}
 	}//END OF EXECUTION
 
-	public static void Convert (File SourceFile, File Targetfile, Log log) throws IOException, InterruptedException
+	public static void Convert (File SourceFile, File Targetfile, Logger log) throws IOException, InterruptedException
 	{
 		String ConvertedCommand = "/usr/bin/sox -V1 " + SourceFile.getAbsolutePath() + " -t raw -r 16000 -c 1 -b 16 " + Targetfile.getAbsolutePath();
 		

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.model.ModuleException;
@@ -49,7 +49,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception {
 
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		if(MIPObject == null)
 		{
 			log.debug("ModuleInstanceProject is null!");
@@ -71,14 +71,14 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 		
 	}//END OF EXECUTION
 		
-	public boolean SetValue(Object O, Variable Var, ModuleInstanceProject MIP, Log log) throws IOException, ModuleException
+	public boolean SetValue(Object O, Variable Var, ModuleInstanceProject MIP, Logger log) throws IOException, ModuleException
 	{
 		String Value=null;
 		switch(Var.getType())
 		{
 		case BOOLEAN:
 			Value = CAST_BOOLEAN(O, log);
-			log.debug(Value +" <==> " + Var.getValue());
+			//log.debug(Value +" <==> " + Var.getValue());
 			if(!Var.getValue().equals(Value))
 			{
 				Var.setValue(Value);
@@ -87,7 +87,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 			return false;
 		case STRING:
 			Value= CAST_STRING(O, log);
-			log.debug(Value +" <==> " + Var.getValue());
+			//log.debug(Value +" <==> " + Var.getValue());
 			if(!Var.getValue().equals(Value))
 			{
 				Var.setValue(Value);
@@ -96,7 +96,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 			return false;
 		case NUMBER:
 			Value= CAST_NUMBER(O, log);
-			log.debug(Value +" <==> " + Var.getValue());
+			//log.debug(Value +" <==> " + Var.getValue());
 			if(!Var.getValue().equals(Value))
 			{
 				Var.setValue(Value);
@@ -107,7 +107,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 		case STARFACE_GROUP:
 		case STARFACE_USER:
 			Value= CAST_STARFACE_ENTITY(O, log);
-			log.debug(Value +" <==> " + Var.getValue());
+			//log.debug(Value +" <==> " + Var.getValue());
 			if(!Var.getValue().equals(Value))
 			{
 				Var.setValue(Value);
@@ -180,7 +180,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 
 			if(!LR.getValues().equals(Values))
 			{
-				log.debug(Values.toString() +"<==>"+LR.getValues().toString());
+				//log.debug(Values.toString() +"<==>"+LR.getValues().toString());
 				LR.setValues(Values);
 				Set<Resource> Resources = MIP.getObject().getResources();
 				Resource ROld = null;
@@ -219,7 +219,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 		return false;
 	}
 		
-	private String CAST_STARFACE_ENTITY(Object O, Log log)
+	private String CAST_STARFACE_ENTITY(Object O, Logger log)
 	{
 		if (O instanceof String)
 		{
@@ -245,7 +245,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 		return "-1";
 	}
 	
-	private String CAST_NUMBER(Object O, Log log)
+	private String CAST_NUMBER(Object O, Logger log)
 	{
 		if (O instanceof String)
 		{
@@ -283,7 +283,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 		return "-999999999";
 	}
 	
-	private String CAST_STRING(Object O, Log log)
+	private String CAST_STRING(Object O, Logger log)
 	{
 		if (O instanceof String)
 		{
@@ -324,7 +324,7 @@ public class SetFieldbyGUIName4Instance implements IBaseExecutable
 		return "CAST_ERROR";
 	}
 			
-	private String CAST_BOOLEAN(Object O, Log log)
+	private String CAST_BOOLEAN(Object O, Logger log)
 	{
 		if(O instanceof Boolean)
 		{

@@ -2,7 +2,7 @@ package si.module.guichanges;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.ModuleRegistry;
@@ -34,7 +34,7 @@ public class SaveChanges implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		if(MIPObject == null)
 		{
 			log.debug("ModuleInstanceProject is null!");

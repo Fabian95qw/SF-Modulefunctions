@@ -3,7 +3,7 @@ package si.module.tts.voicerss.utility;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.model.VariableType;
@@ -40,7 +40,7 @@ public class TTS_FILL_TEXTCHOICES implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{		
-	    Log log = context.getLog();
+	    Logger log = context.getLog();
 		
 		List<InputGUITab> GUITabs = context.getInvocationInfo().getModule().getGUITabs();
 	    List<InputGUIObject> Children = null;

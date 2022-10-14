@@ -1,6 +1,6 @@
 package si.module.guichanges;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.model.VariableType;
@@ -25,7 +25,7 @@ public class IsEntryPointTriggeredbySaveChanges implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 		
 		IsTriggeredbySaveChanges = SaveChangesHelper.IsTriggeredinTime(context.getInvocationInfo().getModuleInstance().getId(), log);
 		
