@@ -3,7 +3,7 @@ package si.module.modulefunction;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.ModuleRegistry;
@@ -30,7 +30,7 @@ public class GetAllModules implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
+		Logger log = context.getLog();
 
 		ModuleRegistry MR = (ModuleRegistry)context.provider().fetch(ModuleRegistry.class);
 		
