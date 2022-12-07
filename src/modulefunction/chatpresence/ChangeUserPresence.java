@@ -1,6 +1,7 @@
 package si.module.examples.chatpresence;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
+
 import de.starface.bo.BusinessObjects;
 import de.starface.bo.events.NewUserStateEvent;
 import de.starface.core.component.StarfaceComponentProvider;
@@ -43,7 +44,7 @@ public class ChangeUserPresence implements IBaseExecutable
   @Override
   public void execute(IRuntimeEnvironment context) throws Exception
   {
-    Log log  = context.getLog();
+    Logger log  = context.getLog();
     //Fetch the Required Components
     BusinessObjects BO = (BusinessObjects)context.provider().fetch(BusinessObjects.class);
     StarfaceEventService ES = (StarfaceEventService)context.provider().fetch(StarfaceEventService.class);

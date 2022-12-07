@@ -1,6 +1,7 @@
 package si.module.examples.chatpresence;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
+
 import de.starface.bo.BusinessObjects;
 import de.starface.core.component.StarfaceComponentProvider;
 import de.starface.integration.uci.java.v30.types.UserState;
@@ -37,7 +38,7 @@ public class GetUserPresence implements IBaseExecutable
   @Override
   public void execute(IRuntimeEnvironment context) throws Exception
   {
-    Log log  = context.getLog();
+    Logger log  = context.getLog();
     //Fetch the Required Components
     BusinessObjects BO = (BusinessObjects)context.provider().fetch(BusinessObjects.class);
 
