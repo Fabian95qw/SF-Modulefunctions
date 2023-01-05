@@ -1,7 +1,5 @@
 package si.module.reboot;
 
-import org.apache.commons.logging.Log;
-
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.helpers.SystemUtils;
 import de.vertico.starface.manager.SessionManager;
@@ -15,7 +13,7 @@ import de.vertico.starface.servlets.LogoutServlet;
 
 
 @Function(visibility=Visibility.Private, rookieFunction=false, description="Reboot")
-public class ShutdownFunctions63 implements IBaseExecutable 
+public class ShutdownFunctions implements IBaseExecutable 
 {
 	//##########################################################################################
 	
@@ -35,9 +33,8 @@ public class ShutdownFunctions63 implements IBaseExecutable
 
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
-		Log log = context.getLog();
 		
-		log.debug("Triggering Reboot with Option: " +  optionen.toString());
+		context.getLog().debug("Triggering Reboot with Option: " +  optionen.toString());
 	    		
 		Thread T = new Thread(new Reboot());
 		T.start();

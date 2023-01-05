@@ -2,8 +2,6 @@ package si.module.reboot;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-
 import de.starface.core.component.StarfaceComponentProvider;
 import de.vertico.starface.module.core.model.VariableType;
 import de.vertico.starface.module.core.model.Visibility;
@@ -26,27 +24,22 @@ public class isAfterReboot implements IBaseExecutable
 	@Override
 	public void execute(IRuntimeEnvironment context) throws Exception
 	{
-		Log log = context.getLog();
 
 		File F = new File("/dev/reboot");
 		File FBlock = new File("/home/starface/reboot");
 		
 		if(F.exists() && FBlock.exists())
 		{
-			log.debug("Reboot is in Progres...");
+			context.getLog().debug("Reboot is in Progres...");
 			return;
 		}
 		
 		if(!F.exists() && FBlock.exists())
 		{
-			log.debug("It's after Reboot");
+			context.getLog().debug("It's after Reboot");
 			FBlock.delete();
 			isAfterReboot=true;
 			return;
-		}
-		else
-		{
-			
 		}
 				
 	}//END OF EXECUTION
