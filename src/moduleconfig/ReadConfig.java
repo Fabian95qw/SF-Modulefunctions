@@ -38,19 +38,17 @@ import si.module.moduleconfig.serializers.FileSerializable;
 import si.module.moduleconfig.serializers.TimerSettingsSerializable;
 import si.module.moduleconfig.serializers.VariableSerializable;
 
-@Function(visibility=Visibility.Private, rookieFunction=false, description="")
+@Function(visibility=Visibility.Private, description="")
 public class ReadConfig implements IBaseExecutable 
 {
 	//##########################################################################################
 	
 	@InputVar(label="SourceFile", description="SourceFile",type=VariableType.STRING)
 	public String SourceFile="";
-		    	
 	
 	@InputVar(label="IgnoreVariables", description="Ignore Variables",type=VariableType.LIST)
 	public List<String> IgnoreVariables = new ArrayList<String>();
 		    	
-	
     StarfaceComponentProvider componentProvider = StarfaceComponentProvider.getInstance(); 
     //##########################################################################################
 	
@@ -116,7 +114,15 @@ public class ReadConfig implements IBaseExecutable
 		}
 		
 		log.debug("Updating Instance " + MIP.getObject().getModuleName() +" " + MIP.getObject().getId());
-		SaveChangesHelper.AddChange(MIP.getObject().getId(), context);
+		
+		try
+		{
+			SaveChangesHelper.AddChange(MIP.getObject().getId(), context);
+		}
+		catch(NoSuchMethodError e)
+		{
+			
+		}
 		MR.updateModuleInstance(MIP);
 		
 	}//END OF EXECUTION
@@ -157,6 +163,7 @@ public class ReadConfig implements IBaseExecutable
 			{
 				Var.setValue(Value);
 			}
+			break;
 		case STARFACE_ACCOUNT:
 		case STARFACE_GROUP:
 		case STARFACE_USER:
