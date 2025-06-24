@@ -16,6 +16,7 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 
 import de.starface.core.component.StarfaceComponentProvider;
+import de.vertico.starface.module.core.ModuleRegistry;
 import de.vertico.starface.module.core.model.Variable;
 import de.vertico.starface.module.core.model.VariableType;
 import de.vertico.starface.module.core.model.Visibility;
@@ -31,10 +32,13 @@ import si.module.moduleconfig.serializers.FileSerializable;
 import si.module.moduleconfig.serializers.TimerSettingsSerializable;
 import si.module.moduleconfig.serializers.VariableSerializable;
 
-@Function(visibility=Visibility.Private, rookieFunction=false, description="")
+@Function(visibility=Visibility.Private, description="")
 public class SaveConfig implements IBaseExecutable 
 {
 	//##########################################################################################
+	
+	@InputVar(label="UUID", description="TargetFile",type=VariableType.STRING)
+	public String UUID="";
 	
 	@InputVar(label="TargetFile", description="TargetFile",type=VariableType.STRING)
 	public String TargetFile="";
@@ -47,7 +51,10 @@ public class SaveConfig implements IBaseExecutable
 	public void execute(IRuntimeEnvironment context) throws Exception 
 	{
 		Logger log = context.getLog();
-		List<Variable> VarList = context.getInvocationInfo().getModuleInstance().getInputVars();
+		
+		ModuleRegistry ModReg = context.provider().fetch(ModuleRegistry.class);
+		
+		List<Variable> VarList = ModReg.getInstance(UUID).getInputVars();
 				
 		List<VariableSerializable> Variables = new ArrayList<VariableSerializable>();
 		
