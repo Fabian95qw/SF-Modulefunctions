@@ -78,12 +78,12 @@ public class ListContacts implements IBaseExecutable
 		log.debug("Executing Search: " + STARFACE_USER+"-"+Foldername);
 		SearchResultWithEstimate SR = ABI.search(SB, "", true); //Search the Folder with no Searchterm defined, so it will return all Users
 				
-	    
+		List<AddressbookContact> srfiltered = new ArrayList<AddressbookContact>(); // Setup new List for Filter
 	    if(isPrivate) //If the Search is private, there is a separate list of ACL's which lists, which contact can only be seen by which user
 	    {
 			//Even if the Folder "private" is searched, it will return all Private Contacts of all users, unless filtered
 			List<List<Object>> ACLList = GetACLforPerson(STARFACE_USER, log);
-			List<AddressbookContact> srfiltered = new ArrayList<AddressbookContact>();
+			
 			String PersonID=null;
 			
 		    for (AddressbookContact AC : SR.getContacts()) //Check for each Contact, if the ACL List contains it's UUID
@@ -99,18 +99,21 @@ public class ListContacts implements IBaseExecutable
 		      		}    		
 		      	}  
 		    }
-	    	SR.setContacts(srfiltered); //Replace Contacts with the Filtered list of Contacts
+	    }
+	    else
+	    {
+	    	srfiltered = SR.getContacts();
 	    }
 	    
-		if(SR.getContacts().size() == 0)
+		if(srfiltered.size() == 0)
 		{
 			log.debug("Search returned 0 Contacts.");
 			return;
 		}
 		
-		log.debug("Found: " + SR.getContacts().size() + " Contacts");
+		log.debug("Found: " + srfiltered.size() + " Contacts");
 
-		for(AddressbookContact AC: SR.getContacts()) //Turning the Contact into a Map
+		for(AddressbookContact AC: srfiltered) //Turning the Contact into a Map
 		{
 			//This is just a basic Example with some basic attributes.
 			Map<String, Object> Contact = new HashMap<String, Object>();
